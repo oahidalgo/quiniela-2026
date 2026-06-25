@@ -1,0 +1,23 @@
+-- Ejecutar PRIMERO si el schema.sql falla por funciones existentes
+drop function if exists score_prediction(int,int,int,int) cascade;
+drop function if exists match_closing(timestamptz) cascade;
+drop function if exists resolve_token(text) cascade;
+drop function if exists register_participant(text,text,text,text) cascade;
+drop function if exists login_participant(text,text,text,text) cascade;
+drop function if exists logout_participant(text) cascade;
+drop function if exists get_matches() cascade;
+drop function if exists get_match(uuid) cascade;
+drop function if exists save_prediction(text,uuid,int,int) cascade;
+drop function if exists get_my_predictions(text) cascade;
+drop function if exists get_match_predictions(text,uuid) cascade;
+drop function if exists get_standings() cascade;
+drop function if exists require_admin(text) cascade;
+drop function if exists recalc_match(uuid) cascade;
+drop function if exists admin_set_result(text,uuid,int,int) cascade;
+drop function if exists admin_create_match(text,text,text,text,text,text,text,text,text,timestamptz) cascade;
+drop function if exists admin_update_match(text,uuid,text,text,text,text,text,text,text,text,timestamptz) cascade;
+drop function if exists admin_delete_match(text,uuid) cascade;
+drop function if exists admin_list_participants(text) cascade;
+drop function if exists admin_delete_participant(text,uuid) cascade;
+drop function if exists admin_recalculate(text) cascade;
+drop function if exists admin_reset(text,boolean) cascade;
