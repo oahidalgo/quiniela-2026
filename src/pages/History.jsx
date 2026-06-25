@@ -367,9 +367,9 @@ function PredCard({ p, token }) {
                 <thead>
                   <tr>
                     <th>Jugador</th>
-                    <th className='text-center'>Pronóstico</th>
-                    <th className='text-center'>Resultado</th>
-                    <th className='text-center'>Pts</th>
+                    <th className='text-center'>Pron.</th>
+                    <th className='text-center'>Res.</th>
+                    <th className='text-center'>Pts.</th>
                   </tr>
                 </thead>
                 <tbody>
