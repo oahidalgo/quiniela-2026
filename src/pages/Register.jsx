@@ -45,8 +45,9 @@ export default function Register() {
     <div className="auth-page">
       <div className="auth-card">
         <div className="text-center mb-4">
-          <div style={{ fontSize: '3rem', lineHeight: 1 }}>🏆</div>
-          <h1 className="text-gold mt-2" style={{ fontSize: '2.2rem' }}>CREAR CUENTA</h1>
+          <img src="/logo.png" alt="United 2026" style={{ width: 80, height: 80, borderRadius: '50%', objectFit: 'cover', boxShadow: '0 6px 24px rgba(0,0,0,.45)' }}
+            onError={(e) => { e.target.style.display = 'none' }} />
+          <h1 className="brand-text mt-3" style={{ fontSize: '2.4rem' }}>CREAR CUENTA</h1>
           <p className="text-muted" style={{ fontSize: '0.9rem' }}>Quiniela Mundial 2026</p>
         </div>
 

@@ -1,210 +1,691 @@
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 :root {
-  --bs-body-bg: #0b0f1a;
-  --bs-body-color: #e8eaf0;
-  --bs-border-color: #1e2535;
+  --bs-body-bg: #0a0a16;
+  --bs-body-color: #ecebf5;
+  --bs-border-color: #221d3a;
 
-  --green:      #00c853;
-  --green-dim:  #00a846;
-  --gold:       #FFD700;
-  --gold-dim:   #c9a800;
-  --red:        #e53935;
-  --blue:       #60a5fa;
+  /* ── Scoring colors (NO TOCAR — código de datos) ── */
+  --exacto: #3b82f6; /* azul  */
+  --ganador: #00d564; /* verde */
+  --inverso: #ffd60a; /* amarillo */
+  --fallo: #ff4757; /* rojo  */
 
-  --exacto:  #60a5fa;
-  --ganador: #00c853;
-  --inverso: #FFD700;
-  --fallo:   #e53935;
+  --green: #00d564;
+  --green-dim: #00b855;
+  --gold: #ffd60a;
+  --red: #ff4757;
+  --blue: #3b82f6;
 
-  --bg:      #0b0f1a;
-  --bg2:     #0f1422;
-  --bg3:     #141929;
-  --surface: #161c2d;
-  --surface2:#1c2338;
-  --border:  #1e2535;
-  --border2: #263049;
-  --text:    #e8eaf0;
-  --muted:   #6b7a99;
+  /* ── Brand Mundial 2026 — paleta logo United 2026 (verde/azul/rojo) ── */
+  --brand-1: #1fa84b; /* verde   */
+  --brand-2: #1b4fa0; /* azul navy */
+  --brand-3: #d4142a; /* rojo    */
+  --brand-grad: linear-gradient(120deg, #1fa84b 0%, #1b4fa0 52%, #d4142a 100%);
+  --brand-grad2: linear-gradient(120deg, #1fa84b 0%, #1b4fa0 100%);
+  --pitch: #0d3b1e; /* verde estadio */
 
-  --radius:    14px;
-  --radius-sm: 9px;
+  /* ── Surfaces (tinte azul-noche) ── */
+  --bg: #080c14;
+  --bg2: #0b1019;
+  --bg3: #101723;
+  --surface: #121a28;
+  --surface2: #172236;
+  --border: #1c2738;
+  --border2: #25334a;
+  --text: #e8edf5;
+  --muted: #7d8aa3;
+
+  --radius: 16px;
+  --radius-sm: 10px;
 }
 
 body {
   font-family: 'Inter', sans-serif;
-  background: var(--bg);
   color: var(--text);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(
+      ellipse 60% 50% at 10% -5%,
+      rgba(31, 168, 75, 0.16) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 55% 45% at 95% 5%,
+      rgba(27, 79, 160, 0.2) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 70% 55% at 50% 112%,
+      rgba(212, 20, 42, 0.1) 0%,
+      transparent 55%
+    ),
+    var(--bg);
+  background-attachment: fixed;
 }
 
-h1,h2,h3,h4 { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.04em; }
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.04em;
+}
 
-/* ── Bootstrap overrides ─────────────────── */
-.navbar { background: var(--bg2) !important; border-bottom: 1px solid var(--border2); }
-.navbar-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.06em; color: var(--gold) !important; }
-.nav-link { color: var(--muted) !important; font-size: 0.9rem; font-weight: 500; padding: 6px 14px !important; border-radius: 8px !important; transition: all 0.2s; }
-.nav-link:hover { color: var(--text) !important; background: var(--surface2) !important; }
-.nav-link.active { color: var(--gold) !important; font-weight: 700 !important; }
-.nav-link.active::after { content: ''; display: block; height: 2px; background: var(--gold); border-radius: 2px; margin-top: 2px; }
+/* ── Brand helpers ───────────────────────── */
+.brand-text {
+  background: var(--brand-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.brand-grad-bg {
+  background: var(--brand-grad);
+}
 
+/* ── Navbar ──────────────────────────────── */
+.navbar {
+  background: rgba(14, 12, 29, 0.82) !important;
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border2);
+  position: relative;
+}
+.navbar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--brand-grad);
+  opacity: 0.9;
+}
+.navbar-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.07em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.brand-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%; /* esquinas circulares → sin fondo blanco cuadrado */
+  object-fit: cover;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+.flag-chip {
+  width: 22px;
+  height: 15px;
+  border-radius: 2px;
+  object-fit: cover;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+.nav-link {
+  color: var(--muted) !important;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 6px 14px !important;
+  border-radius: 10px !important;
+  transition: all 0.2s;
+}
+.nav-link:hover {
+  color: var(--text) !important;
+  background: var(--surface2) !important;
+}
+.nav-link.active {
+  color: #fff !important;
+}
+.nav-link.active {
+  background: linear-gradient(
+    120deg,
+    rgba(31, 168, 75, 0.18),
+    rgba(27, 79, 160, 0.18)
+  ) !important;
+}
+.nav-link.active::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: var(--brand-grad);
+  border-radius: 2px;
+  margin-top: 3px;
+}
+
+/* ── Buttons ─────────────────────────────── */
+.btn {
+  font-weight: 700;
+  border-radius: var(--radius-sm) !important;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.2s,
+    filter 0.2s;
+}
+.btn:active {
+  transform: scale(0.96);
+}
+
+.btn-primary {
+  background: var(--brand-grad2) !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: 0 6px 18px rgba(27, 79, 160, 0.35);
+}
+.btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 8px 24px rgba(31, 168, 75, 0.4);
+}
+.btn-primary:disabled {
+  background: var(--surface2) !important;
+  box-shadow: none;
+  color: var(--muted) !important;
+}
+
+.btn-success {
+  background: var(--green) !important;
+  border: none !important;
+  color: #04150a !important;
+  box-shadow: 0 6px 18px rgba(0, 213, 100, 0.3);
+}
+.btn-success:hover {
+  background: var(--green-dim) !important;
+}
+
+.btn-outline-warning {
+  color: var(--gold) !important;
+  border-color: var(--gold) !important;
+}
+.btn-outline-warning:hover {
+  background: rgba(255, 214, 10, 0.12) !important;
+  color: var(--gold) !important;
+}
+
+.btn-outline-secondary {
+  color: var(--muted) !important;
+  border-color: var(--border2) !important;
+}
+.btn-outline-secondary:hover {
+  background: var(--surface2) !important;
+  color: var(--text) !important;
+  border-color: var(--border2) !important;
+}
+
+/* ── Cards ───────────────────────────────── */
 .card {
   background: var(--surface) !important;
   border: 1px solid var(--border2) !important;
   border-radius: var(--radius) !important;
 }
-.card:hover { border-color: var(--border2) !important; }
 
-.btn-primary { background: var(--green) !important; border-color: var(--green) !important; font-weight: 700; }
-.btn-primary:hover { background: var(--green-dim) !important; border-color: var(--green-dim) !important; }
-.btn-outline-warning { color: var(--gold) !important; border-color: var(--gold) !important; }
-.btn-outline-warning:hover { background: rgba(255,215,0,.1) !important; color: var(--gold) !important; }
-
-.form-control, .form-select {
+/* ── Forms ───────────────────────────────── */
+.form-control,
+.form-select {
   background: var(--bg3) !important;
   border-color: var(--border2) !important;
   color: var(--text) !important;
   border-radius: var(--radius-sm) !important;
 }
-.form-control:focus, .form-select:focus {
+.form-control:focus,
+.form-select:focus {
   background: var(--bg3) !important;
-  border-color: var(--green) !important;
-  box-shadow: 0 0 0 3px rgba(0,200,83,.15) !important;
+  border-color: var(--brand-2) !important;
+  box-shadow: 0 0 0 3px rgba(27, 79, 160, 0.25) !important;
   color: var(--text) !important;
 }
-.form-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+.form-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  font-weight: 700;
+}
 
-.table { --bs-table-bg: transparent; }
-.table > thead > tr > th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); border-color: var(--border2) !important; font-weight: 600; }
-.table > tbody > tr > td { border-color: var(--border) !important; vertical-align: middle; }
-.table > tbody > tr:hover > td { background: rgba(255,255,255,.02) !important; }
+/* ── Table ───────────────────────────────── */
+.table {
+  --bs-table-bg: transparent;
+}
+.table > thead > tr > th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  border-color: var(--border2) !important;
+  font-weight: 700;
+}
+.table > tbody > tr > td {
+  border-color: var(--border) !important;
+  vertical-align: middle;
+}
+.table > tbody > tr:hover > td {
+  background: rgba(255, 255, 255, 0.025) !important;
+}
 
-.badge { font-size: 0.72rem !important; font-weight: 700 !important; letter-spacing: 0.05em; padding: 4px 10px !important; border-radius: 20px !important; }
+.badge {
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em;
+  padding: 4px 11px !important;
+  border-radius: 20px !important;
+}
 
 /* ── Scrollbar ───────────────────────────── */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--bg2); }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg2);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border2);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-2);
+}
 
 /* ── Utilities ───────────────────────────── */
-.text-gold   { color: var(--gold)   !important; }
-.text-green  { color: var(--green)  !important; }
-.text-muted  { color: var(--muted)  !important; }
-.bg-surface  { background: var(--surface) !important; }
-.bg-surface2 { background: var(--surface2) !important; }
-.border-dim  { border-color: var(--border2) !important; }
-.font-display{ font-family: 'Bebas Neue', sans-serif !important; letter-spacing: 0.04em; }
+.text-gold {
+  color: var(--gold) !important;
+}
+.text-green {
+  color: var(--green) !important;
+}
+.text-muted {
+  color: var(--muted) !important;
+}
+.text-brand {
+  color: var(--brand-1) !important;
+}
+.bg-surface {
+  background: var(--surface) !important;
+}
+.bg-surface2 {
+  background: var(--surface2) !important;
+}
+.border-dim {
+  border-color: var(--border2) !important;
+}
+.font-display {
+  font-family: 'Bebas Neue', sans-serif !important;
+  letter-spacing: 0.04em;
+}
+
+/* ── Hero banner ─────────────────────────── */
+.hero {
+  position: relative;
+  border-radius: var(--radius);
+  padding: 26px 28px;
+  margin-bottom: 26px;
+  overflow: hidden;
+  background: linear-gradient(120deg, #178a3e 0%, #16448c 52%, #b51124 100%);
+  box-shadow: 0 12px 40px rgba(27, 79, 160, 0.3);
+}
+.hero::before {
+  /* franjas de cancha diagonales */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.06) 0 26px,
+    transparent 26px 52px
+  );
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.18) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.6rem;
+  line-height: 0.95;
+  color: #fff;
+  letter-spacing: 0.03em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+  margin-bottom: 4px;
+  position: relative;
+}
+.hero-sub {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  font-weight: 600;
+  position: relative;
+}
+.hero-flags {
+  font-size: 1.5rem;
+  position: relative;
+  letter-spacing: 0.1em;
+}
+
+/* ── Section header ──────────────────────── */
+.day-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.04em;
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 30px;
+  background: linear-gradient(
+    120deg,
+    rgba(31, 168, 75, 0.16),
+    rgba(27, 79, 160, 0.16)
+  );
+  border: 1px solid var(--border2);
+  text-transform: capitalize;
+}
+.day-header .bi {
+  color: var(--brand-1);
+}
 
 /* ── Score input ─────────────────────────── */
 .score-input {
-  width: 58px; height: 52px;
+  width: 58px;
+  height: 56px;
   text-align: center;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   background: var(--bg3);
   border: 2px solid var(--border2);
   border-radius: var(--radius-sm);
   color: var(--text);
   appearance: textfield;
   -moz-appearance: textfield;
-  transition: border-color .2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
 }
-.score-input:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(0,200,83,.12); }
+.score-input:hover {
+  border-color: var(--brand-2);
+}
+.score-input:focus {
+  outline: none;
+  border-color: var(--brand-2);
+  background: #131d2e;
+  box-shadow: 0 0 0 3px rgba(27, 79, 160, 0.25);
+}
 .score-input::-webkit-inner-spin-button,
-.score-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+.score-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
 
 /* ── Match card ──────────────────────────── */
 .match-card {
-  background: var(--surface);
+  position: relative;
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg2) 100%);
   border: 1px solid var(--border2);
   border-radius: var(--radius);
   padding: 16px 20px;
-  transition: border-color .2s, box-shadow .2s;
+  transition:
+    transform 0.18s ease,
+    border-color 0.2s,
+    box-shadow 0.2s;
+  overflow: hidden;
 }
-.match-card:hover { border-color: #2d3a55; box-shadow: 0 4px 24px rgba(0,0,0,.4); }
-.match-card.closed-card { opacity: .85; }
+.match-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: var(--card-accent, var(--brand-grad));
+  opacity: 0.95;
+}
+.match-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--brand-2);
+  box-shadow: 0 12px 32px rgba(27, 79, 160, 0.22);
+}
+.match-card.closed-card {
+  opacity: 0.92;
+}
 
 /* ── Category colors ─────────────────────── */
-.cat-exacto  { color: var(--exacto)  !important; border-color: var(--exacto)  !important; }
-.cat-ganador { color: var(--ganador) !important; border-color: var(--ganador) !important; }
-.cat-inverso { color: var(--inverso) !important; border-color: var(--inverso) !important; }
-.cat-fallo   { color: var(--fallo)   !important; border-color: var(--fallo)   !important; }
-
-/* ── Hero gradient ───────────────────────── */
-.hero-gradient {
-  background: linear-gradient(135deg, #0b1a0f 0%, #0b0f1a 60%);
+.cat-exacto {
+  color: var(--exacto) !important;
+  border-color: var(--exacto) !important;
+}
+.cat-ganador {
+  color: var(--ganador) !important;
+  border-color: var(--ganador) !important;
+}
+.cat-inverso {
+  color: var(--inverso) !important;
+  border-color: var(--inverso) !important;
+}
+.cat-fallo {
+  color: var(--fallo) !important;
+  border-color: var(--fallo) !important;
 }
 
 /* ── Stat card ───────────────────────────── */
 .stat-card {
-  background: var(--surface);
+  position: relative;
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg2) 100%);
   border: 1px solid var(--border2);
   border-radius: var(--radius);
   padding: 18px 12px;
   text-align: center;
   flex: 1;
   min-width: 70px;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.2s;
+  overflow: hidden;
 }
-.stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; line-height: 1; }
-.stat-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-top: 4px; }
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+}
+.stat-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: var(--card-accent, var(--brand-grad));
+  opacity: 0.85;
+}
+.stat-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.3rem;
+  line-height: 1;
+}
+.stat-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  margin-top: 4px;
+  font-weight: 600;
+}
 
 /* ── Bottom save bar ─────────────────────── */
 .save-bar {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: rgba(11,15,26,.95);
-  backdrop-filter: blur(12px);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(10, 10, 22, 0.92);
+  backdrop-filter: blur(16px);
   border-top: 1px solid var(--border2);
   padding: 12px 24px;
   z-index: 999;
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.4);
+}
+.save-bar::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -2px;
+  height: 2px;
+  background: var(--brand-grad);
 }
 
-/* ── Open badge ──────────────────────────── */
-.badge-open   { background: rgba(0,200,83,.12) !important; color: var(--green)  !important; border: 1px solid rgba(0,200,83,.3); }
-.badge-closed { background: rgba(107,122,153,.12) !important; color: var(--muted) !important; border: 1px solid rgba(107,122,153,.25); }
-.badge-live   { background: rgba(229,57,53,.15) !important; color: #ff6b6b !important; border: 1px solid rgba(229,57,53,.3); animation: pulse-red 1.5s infinite; }
+/* ── Badges de estado ────────────────────── */
+.badge-open {
+  background: rgba(0, 213, 100, 0.14) !important;
+  color: var(--green) !important;
+  border: 1px solid rgba(0, 213, 100, 0.35);
+}
+.badge-closed {
+  background: rgba(139, 133, 173, 0.12) !important;
+  color: var(--muted) !important;
+  border: 1px solid rgba(139, 133, 173, 0.25);
+}
+.badge-live {
+  background: rgba(255, 71, 87, 0.16) !important;
+  color: #ff6b78 !important;
+  border: 1px solid rgba(255, 71, 87, 0.35);
+  animation: pulse-red 1.4s infinite;
+}
 
 @keyframes pulse-red {
-  0%,100% { opacity: 1; } 50% { opacity: .6; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
 }
 
 /* ── Prediction bubble ───────────────────── */
 .pred-bubble {
-  display: inline-flex; align-items: center; gap: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: var(--bg3);
+  border: 1px solid var(--border2);
   border-radius: 10px;
   padding: 7px 16px;
 }
 .pred-bubble.real {
-  background: rgba(255,215,0,.07);
-  border: 1px solid rgba(255,215,0,.2);
+  background: rgba(255, 214, 10, 0.08);
+  border: 1px solid rgba(255, 214, 10, 0.28);
 }
 .pred-score {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.6rem; line-height: 1;
+  font-size: 1.6rem;
+  line-height: 1;
 }
-.pred-sep { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--muted); }
+.pred-sep {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  color: var(--muted);
+}
 
-/* ── Login page ──────────────────────────── */
+/* ── Auth pages ──────────────────────────── */
 .auth-page {
   min-height: 100vh;
-  background: radial-gradient(ellipse at 30% 20%, rgba(0,100,40,.25) 0%, transparent 60%),
-              radial-gradient(ellipse at 70% 80%, rgba(0,80,200,.1) 0%, transparent 60%),
-              var(--bg);
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(
+      ellipse 50% 50% at 18% 12%,
+      rgba(31, 168, 75, 0.28) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 50% 50% at 82% 88%,
+      rgba(212, 20, 42, 0.24) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 60% 45% at 50% 50%,
+      rgba(27, 79, 160, 0.2) 0%,
+      transparent 60%
+    ),
+    var(--bg);
 }
 .auth-card {
-  background: var(--surface);
+  position: relative;
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg2) 100%);
   border: 1px solid var(--border2);
-  border-radius: 20px;
-  padding: 40px 36px;
-  width: 100%; max-width: 420px;
-  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  border-radius: 22px;
+  padding: 42px 36px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+.auth-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 4px;
+  background: var(--brand-grad);
 }
 
 /* ── Standings ───────────────────────────── */
-.rank-1 td { background: rgba(255,215,0,.05) !important; }
-.rank-2 td { background: rgba(192,192,192,.04) !important; }
-.rank-3 td { background: rgba(205,127,50,.04) !important; }
-.my-row td { background: rgba(0,200,83,.06) !important; }
+.rank-1 td {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 214, 10, 0.1),
+    transparent
+  ) !important;
+}
+.my-row td {
+  background: rgba(0, 213, 100, 0.06) !important;
+}
+
+/* ── Animaciones de entrada ──────────────── */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.4s ease both;
+}
+
+@keyframes ball-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+.ball-bounce {
+  display: inline-block;
+  animation: ball-bounce 1.6s ease-in-out infinite;
+}

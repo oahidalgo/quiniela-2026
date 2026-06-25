@@ -101,7 +101,7 @@ function PredCard({ p, token }) {
   }
 
   return (
-    <div className="match-card" style={{ borderLeft: cat ? `3px solid var(--${cat})` : '3px solid var(--border)' }}>
+    <div className="match-card" style={{ '--card-accent': cat ? `var(--${cat})` : 'transparent' }}>
 
       {/* Encabezado: etapa + categoría */}
       <div className="d-flex justify-content-between align-items-start mb-3">
@@ -228,7 +228,7 @@ function PredCard({ p, token }) {
 
 function StatCard({ label, value, color, icon }) {
   return (
-    <div className="stat-card">
+    <div className="stat-card" style={{ '--card-accent': color }}>
       <i className={`bi ${icon} mb-1`} style={{ color, fontSize: '1rem' }}></i>
       <div className="stat-value" style={{ color }}>{value}</div>
       <div className="stat-label">{label}</div>
