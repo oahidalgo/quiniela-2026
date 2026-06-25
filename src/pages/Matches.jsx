@@ -162,51 +162,8 @@ export default function Matches() {
   return (
     <div style={{ paddingBottom: pendingIds.length ? 80 : 0 }}>
       {/* Hero */}
-      <div className='hero rise'>
-        <div className='d-flex justify-content-between align-items-center flex-wrap gap-2'>
-          <div>
-            <div className='hero-title'>Ingresa tus pronósticos</div>
-            <div className='hero-sub'>
-              <i className='bi bi-lightning-charge-fill me-1'></i>
-              Cargá tus marcadores antes del cierre (1 hora antes que comience
-              el partido) · 5pts marcador exacto / 3pts acierto ganador o empate
-              / 1pt marcador inverso exacto
-            </div>
-          </div>
-          <div className='d-flex align-items-center gap-2 hero-flags'>
-            <i
-              className='bi bi-trophy-fill'
-              style={{ color: '#FFD60A', fontSize: '1.6rem' }}
-            ></i>
-            <img
-              src='https://flagcdn.com/48x36/us.png'
-              alt='US'
-              style={{
-                width: 30,
-                borderRadius: 3,
-                boxShadow: '0 2px 6px rgba(0,0,0,.4)',
-              }}
-            />
-            <img
-              src='https://flagcdn.com/48x36/ca.png'
-              alt='CA'
-              style={{
-                width: 30,
-                borderRadius: 3,
-                boxShadow: '0 2px 6px rgba(0,0,0,.4)',
-              }}
-            />
-            <img
-              src='https://flagcdn.com/48x36/mx.png'
-              alt='MX'
-              style={{
-                width: 30,
-                borderRadius: 3,
-                boxShadow: '0 2px 6px rgba(0,0,0,.4)',
-              }}
-            />
-          </div>
-        </div>
+      <div className='hero'>
+        <div className='hero-title'>Ingresa tu pronósticos</div>
       </div>
 
       {/* Partidos abiertos */}
@@ -244,34 +201,18 @@ export default function Matches() {
                   </div>
 
                   {/* Teams + inputs */}
-                  <div
-                    className='d-flex align-items-center mb-2'
-                    style={{ gap: 0 }}
-                  >
+                  <div className='match-body mb-2'>
                     {/* Local */}
-                    <div
-                      className='d-flex align-items-center gap-2'
-                      style={{ flex: 1, minWidth: 0 }}
-                    >
+                    <div className='team team-home'>
                       <Flag code={m.home_flag} size={32} />
-                      <span
-                        className='fw-bold'
-                        style={{
-                          fontSize: '1rem',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        {m.home_team}
-                      </span>
+                      <span className='team-name'>{m.home_team}</span>
                     </div>
 
-                    {/* Score — fixed width, centered */}
-                    <div
-                      className='d-flex align-items-center justify-content-center gap-2 flex-shrink-0'
-                      style={{ width: 160 }}
-                    >
+                    {/* vs (solo móvil) */}
+                    <span className='vs-mobile'>vs</span>
+
+                    {/* Score */}
+                    <div className='match-score'>
                       <input
                         className='score-input'
                         type='number'
@@ -301,21 +242,8 @@ export default function Matches() {
                     </div>
 
                     {/* Visitante */}
-                    <div
-                      className='d-flex align-items-center gap-2 justify-content-end'
-                      style={{ flex: 1, minWidth: 0 }}
-                    >
-                      <span
-                        className='fw-bold text-end'
-                        style={{
-                          fontSize: '1rem',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        {m.away_team}
-                      </span>
+                    <div className='team team-away'>
+                      <span className='team-name'>{m.away_team}</span>
                       <Flag code={m.away_flag} size={32} />
                     </div>
                   </div>

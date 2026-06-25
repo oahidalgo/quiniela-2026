@@ -6,8 +6,9 @@ import {
 } from '../lib/api'
 import { useSession } from '../context/SessionContext'
 
-const STAGES = ['16vos', '8vos', '4tos', 'semifinal', '3erlugar', 'final']
+const STAGES = ['grupos', '16vos', '8vos', '4tos', 'semifinal', '3erlugar', 'final']
 const STAGE_LABELS = {
+  grupos: 'Fase de Grupos',
   '16vos': 'Dieciseisavos', '8vos': 'Octavos', '4tos': 'Cuartos',
   semifinal: 'Semifinales', '3erlugar': 'Tercer lugar', final: 'Final',
 }
@@ -248,9 +249,9 @@ function DangerBtn({ label, desc, onClick, disabled, danger }) {
   return (
     <div style={{ background: 'var(--surface)', border: `1px solid ${danger ? 'var(--fallo)' : 'var(--border)'}`, borderRadius: 'var(--radius-sm)', padding: '14px 16px' }}>
       <p style={{ fontWeight: 600, marginBottom: 4 }}>{label}</p>
-      <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 10 }}>{desc}</p>
+      <p style={{ fontSize: '0.8rem', color: 'var(--muted)', marginBottom: 10 }}>{desc}</p>
       <button onClick={onClick} disabled={disabled}
-        style={{ ...styles.btnSm, background: danger ? 'var(--fallo)' : 'var(--mexico)' }}>
+        style={{ ...styles.btnSm, background: danger ? 'var(--fallo)' : 'var(--brand-2)' }}>
         Ejecutar
       </button>
     </div>
@@ -269,21 +270,21 @@ function FInput({ label, ...props }) {
 const styles = {
   pageTitle: { fontSize: '2rem', marginBottom: 20, color: 'var(--gold)' },
   tabs: { display: 'flex', gap: 4, marginBottom: 28, flexWrap: 'wrap' },
-  tab: { padding: '8px 18px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', color: 'var(--text-muted)', fontSize: '0.9rem' },
-  tabActive: { background: 'var(--mexico)', color: '#fff', borderColor: 'var(--mexico)' },
+  tab: { padding: '8px 18px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', color: 'var(--muted)', fontSize: '0.9rem' },
+  tabActive: { background: 'var(--brand-2)', color: '#fff', borderColor: 'var(--brand-2)' },
   section: {},
-  sectionTitle: { fontSize: '1.2rem', marginBottom: 16, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' },
+  sectionTitle: { fontSize: '1.2rem', marginBottom: 16, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em' },
   resultRow: { display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' },
   matchLabel: { flex: 1, fontWeight: 500, minWidth: 160 },
-  currentResult: { color: 'var(--text-muted)', fontSize: '0.85rem' },
+  currentResult: { color: 'var(--muted)', fontSize: '0.85rem' },
   goalInput: { width: 52, textAlign: 'center', background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', padding: '6px', color: 'var(--text)', fontSize: '1rem' },
-  btnSm: { padding: '6px 14px', background: 'var(--mexico)', color: '#fff', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem', border: 'none', cursor: 'pointer' },
-  btnPrimary: { padding: '10px 24px', background: 'var(--mexico)', color: '#fff', borderRadius: 'var(--radius-sm)', fontSize: '0.95rem', border: 'none', cursor: 'pointer', fontWeight: 600 },
-  btnSecondary: { padding: '10px 24px', background: 'transparent', color: 'var(--text-muted)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', fontSize: '0.95rem', cursor: 'pointer' },
+  btnSm: { padding: '6px 14px', background: 'var(--brand-2)', color: '#fff', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem', border: 'none', cursor: 'pointer' },
+  btnPrimary: { padding: '10px 24px', background: 'var(--brand-2)', color: '#fff', borderRadius: 'var(--radius-sm)', fontSize: '0.95rem', border: 'none', cursor: 'pointer', fontWeight: 600 },
+  btnSecondary: { padding: '10px 24px', background: 'transparent', color: 'var(--muted)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', fontSize: '0.95rem', cursor: 'pointer' },
   inlineMsg: { fontSize: '0.85rem', color: 'var(--ganador)' },
   matchForm: { display: 'flex', flexDirection: 'column', gap: 12 },
   formRow: { display: 'flex', gap: 12, flexWrap: 'wrap' },
-  label: { display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' },
+  label: { display: 'block', fontSize: '0.75rem', color: 'var(--muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' },
   input: { width: '100%', background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', padding: '8px 12px', color: 'var(--text)', fontSize: '0.95rem' },
   select: { background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', padding: '8px 12px', color: 'var(--text)', fontSize: '0.95rem' },
 }

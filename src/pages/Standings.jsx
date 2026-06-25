@@ -49,13 +49,22 @@ export default function Standings() {
         <table className="table table-hover align-middle">
           <thead>
             <tr>
-              <th style={{ width: 48 }}>#</th>
+              <th style={{ width: 40 }}>#</th>
               <th>Participante</th>
               <th className="text-center">Pts</th>
-              <th className="text-center" style={{ color: 'var(--exacto)' }}>Exactos</th>
-              <th className="text-center" style={{ color: 'var(--ganador)' }}>Ganador</th>
-              <th className="text-center" style={{ color: 'var(--inverso)' }}>Inverso</th>
-              <th className="text-center text-muted">Pronósticos</th>
+              <th className="text-center" style={{ color: 'var(--exacto)' }} title="Exactos">
+                <span className="d-none d-md-inline">Exactos</span>
+                <i className="bi bi-bullseye d-md-none"></i>
+              </th>
+              <th className="text-center" style={{ color: 'var(--ganador)' }} title="Ganador">
+                <span className="d-none d-md-inline">Ganador</span>
+                <i className="bi bi-check-circle d-md-none"></i>
+              </th>
+              <th className="text-center" style={{ color: 'var(--inverso)' }} title="Inverso">
+                <span className="d-none d-md-inline">Inverso</span>
+                <i className="bi bi-arrow-left-right d-md-none"></i>
+              </th>
+              <th className="text-center text-muted d-none d-md-table-cell">Pronósticos</th>
             </tr>
           </thead>
           <tbody>
@@ -82,7 +91,7 @@ export default function Standings() {
                   <td className="text-center fw-semibold" style={{ color: 'var(--exacto)' }}>{r.exact_count}</td>
                   <td className="text-center fw-semibold" style={{ color: 'var(--ganador)' }}>{r.winner_count}</td>
                   <td className="text-center fw-semibold" style={{ color: 'var(--inverso)' }}>{r.inverse_count}</td>
-                  <td className="text-center text-muted">{r.predicted_count}</td>
+                  <td className="text-center text-muted d-none d-md-table-cell">{r.predicted_count}</td>
                 </tr>
               )
             })}

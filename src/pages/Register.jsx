@@ -6,15 +6,13 @@ import { useSession } from '../context/SessionContext'
 const ERROR_MESSAGES = {
   INVALID_NAME: 'Nombre y apellido son obligatorios.',
   INVALID_PIN: 'El PIN debe tener entre 4 y 6 dígitos numéricos.',
-  NAME_TAKEN: 'Esa combinación de nombre y apellidos ya existe.',
-  SECOND_LASTNAME_REQUIRED: 'Ya existe alguien con ese nombre. Ingresá el segundo apellido.',
+  NAME_TAKEN: 'Ya existe alguien con ese nombre y apellido. Diferenciate agregando una inicial o variando tu nombre (ej: "Juan C").',
 }
 
 export default function Register() {
   const { login } = useSession()
   const navigate = useNavigate()
-  const [form, setForm] = useState({ nombre: '', apellido: '', segundo_apellido: '', pin: '', pin2: '' })
-  const [needSecond, setNeedSecond] = useState(false)
+  const [form, setForm] = useState({ nombre: '', apellido: '', pin: '', pin2: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -28,13 +26,11 @@ export default function Register() {
     setLoading(true)
     try {
       const params = { p_nombre: form.nombre.trim(), p_apellido: form.apellido.trim(), p_pin: form.pin }
-      if (form.segundo_apellido.trim()) params.p_segundo_apellido = form.segundo_apellido.trim()
       const data = await apiRegister(params)
       login({ name: data.name, is_admin: data.is_admin, id: data.participant_id }, data.token)
       navigate('/partidos')
     } catch (err) {
       const code = err.message
-      if (code === 'SECOND_LASTNAME_REQUIRED') setNeedSecond(true)
       setError(ERROR_MESSAGES[code] || 'Error al registrarse.')
     } finally {
       setLoading(false)
@@ -62,12 +58,6 @@ export default function Register() {
               <input className="form-control" value={form.apellido} onChange={set('apellido')} placeholder="García" required />
             </div>
           </div>
-          {needSecond && (
-            <div className="mb-3">
-              <label className="form-label">Segundo apellido</label>
-              <input className="form-control" value={form.segundo_apellido} onChange={set('segundo_apellido')} placeholder="López" />
-            </div>
-          )}
           <div className="row g-3 mb-4">
             <div className="col-6">
               <label className="form-label">PIN (4–6 dígitos)</label>

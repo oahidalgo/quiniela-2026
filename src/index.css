@@ -361,7 +361,7 @@ h4 {
   color: #fff;
   letter-spacing: 0.03em;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-  margin-bottom: 4px;
+  margin-bottom: 0;
   position: relative;
 }
 .hero-sub {
@@ -688,4 +688,180 @@ h4 {
 .ball-bounce {
   display: inline-block;
   animation: ball-bounce 1.6s ease-in-out infinite;
+}
+
+/* ── Match body (equipos + marcador) ─────── */
+.match-body {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.team {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+.team-away {
+  justify-content: flex-end;
+}
+.team-name {
+  font-weight: 700;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.team-away .team-name {
+  text-align: right;
+}
+.match-score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+  width: 160px;
+}
+.hist-score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.vs-mobile {
+  display: none;
+}
+
+/* En celular: equipos lado a lado (con "vs"), marcador debajo */
+@media (max-width: 576px) {
+  .match-body {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .team {
+    flex: 1 1 0;
+  }
+  .team-home {
+    order: 1;
+  }
+  .vs-mobile {
+    display: inline-block;
+    order: 2;
+    flex: 0 0 auto;
+    padding: 0 8px;
+    color: var(--muted);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+  }
+  .team-away {
+    order: 3;
+    justify-content: flex-end;
+  }
+  .match-score {
+    order: 4;
+    flex: 0 0 100%;
+    width: 100%;
+    padding-top: 12px;
+  }
+  .hist-score {
+    order: 4;
+    flex: 0 0 100%;
+    width: 100%;
+    padding-top: 12px;
+    justify-content: space-around;
+  }
+}
+
+/* ── Ajustes mobile generales ────────────── */
+@media (max-width: 576px) {
+  .navbar-brand {
+    font-size: 1.3rem;
+  }
+  .hero {
+    padding: 20px 18px;
+  }
+  .hero-title {
+    font-size: 2.1rem;
+  }
+  .hero-sub {
+    font-size: 0.8rem;
+  }
+  .match-card {
+    padding: 14px 16px;
+  }
+  .stat-card {
+    min-width: 60px;
+    padding: 14px 8px;
+  }
+  .stat-value {
+    font-size: 1.9rem;
+  }
+  .table > :not(caption) > * > * {
+    padding: 8px 6px;
+  }
+  .day-header {
+    font-size: 1.1rem;
+    padding: 5px 14px;
+  }
+  .auth-card {
+    padding: 32px 22px;
+  }
+}
+
+/* ── Offcanvas menú móvil ────────────────── */
+.offcanvas {
+  background: var(--bg2) !important;
+  color: var(--text);
+}
+.offcanvas-header {
+  border-bottom: 1px solid var(--border2);
+}
+.offcanvas-title {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.05em;
+  color: var(--gold);
+}
+.offcanvas .btn-close {
+  filter: invert(1) grayscale(1) brightness(1.4);
+}
+.menu-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+@media (max-width: 767.98px) {
+  /* navbar por encima del menú para ver la X */
+  .navbar.sticky-top {
+    z-index: 1200;
+  }
+  /* marca y botón X por encima del offcanvas (son hermanos dentro del navbar) */
+  .navbar-brand,
+  .navbar-toggler {
+    position: relative;
+    z-index: 1300;
+  }
+  .offcanvas-start {
+    inset: 0 !important; /* pantalla completa */
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100vh !important;
+    z-index: 1100 !important;
+    background: var(--bg2) !important;
+  }
+  .offcanvas-body {
+    background: var(--bg2);
+    padding-top: 76px; /* deja ver el navbar (con la X) arriba */
+    display: flex;
+    flex-direction: column;
+  }
+  /* usuario alineado a las opciones, justify-between con Salir */
+  .menu-user {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 14px;
+    margin-top: 18px;
+  }
 }

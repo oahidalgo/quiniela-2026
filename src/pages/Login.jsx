@@ -5,9 +5,6 @@ import { useSession } from '../context/SessionContext';
 
 const ERROR_MESSAGES = {
   BAD_CREDENTIALS: 'Nombre, apellido o PIN incorrecto.',
-  SECOND_LASTNAME_REQUIRED:
-    'Hay más de una persona con ese nombre. Ingresá el segundo apellido.',
-  NAME_TAKEN: 'Esa combinación ya está registrada.',
   SESSION_INVALID: 'Sesión inválida.',
 };
 
@@ -17,10 +14,8 @@ export default function Login() {
   const [form, setForm] = useState({
     nombre: '',
     apellido: '',
-    segundo_apellido: '',
     pin: '',
   });
-  const [needSecond, setNeedSecond] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +31,6 @@ export default function Login() {
         p_apellido: form.apellido.trim(),
         p_pin: form.pin,
       };
-      if (needSecond) params.p_segundo_apellido = form.segundo_apellido.trim();
       const data = await apiLogin(params);
       login(
         { name: data.name, is_admin: data.is_admin, id: data.participant_id },
@@ -45,7 +39,6 @@ export default function Login() {
       navigate('/partidos');
     } catch (err) {
       const code = err.message;
-      if (code === 'SECOND_LASTNAME_REQUIRED') setNeedSecond(true);
       setError(ERROR_MESSAGES[code] || 'Error al iniciar sesión.');
     } finally {
       setLoading(false);
@@ -72,7 +65,7 @@ export default function Login() {
             }}
           />
           <h1 className='brand-text mt-3' style={{ fontSize: '2.8rem' }}>
-            MUNDIAL 2026
+            United 2026
           </h1>
           <p className='text-muted mb-2' style={{ fontSize: '0.9rem' }}>
             Quiniela · Fase Final
@@ -103,7 +96,7 @@ export default function Login() {
               className='form-control'
               value={form.nombre}
               onChange={set('nombre')}
-              placeholder='Juan'
+              placeholder='Ingresa tu nombre'
               required
             />
           </div>
@@ -113,21 +106,10 @@ export default function Login() {
               className='form-control'
               value={form.apellido}
               onChange={set('apellido')}
-              placeholder='García'
+              placeholder='Ingresa tu apellido'
               required
             />
           </div>
-          {needSecond && (
-            <div className='mb-3'>
-              <label className='form-label'>Segundo apellido</label>
-              <input
-                className='form-control'
-                value={form.segundo_apellido}
-                onChange={set('segundo_apellido')}
-                placeholder='López'
-              />
-            </div>
-          )}
           <div className='mb-4'>
             <label className='form-label'>PIN (4–6 dígitos)</label>
             <input

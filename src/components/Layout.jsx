@@ -1,12 +1,48 @@
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import {
+  Outlet,
+  NavLink,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import { useSession } from '../context/SessionContext';
 import { logout as apiLogout } from '../lib/api';
 
 export default function Layout() {
   const { user, isAdmin, token, logout } = useSession();
   const navigate = useNavigate();
+  const location = useLocation();
+  const offcanvasRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const el = offcanvasRef.current;
+    if (!el) return;
+    const onShow = () => setMenuOpen(true);
+    const onHide = () => setMenuOpen(false);
+    el.addEventListener('show.bs.offcanvas', onShow);
+    el.addEventListener('hide.bs.offcanvas', onHide);
+    return () => {
+      el.removeEventListener('show.bs.offcanvas', onShow);
+      el.removeEventListener('hide.bs.offcanvas', onHide);
+    };
+  }, []);
+
+  // Cierra el menú al cambiar de ruta
+  function closeMenu() {
+    const el = offcanvasRef.current;
+    const Offcanvas = window.bootstrap?.Offcanvas;
+    if (el && Offcanvas) {
+      Offcanvas.getOrCreateInstance(el).hide();
+    }
+  }
+
+  useEffect(() => {
+    closeMenu();
+  }, [location.pathname]);
 
   async function handleLogout() {
+    closeMenu();
     try {
       await apiLogout(token);
     } catch {}
@@ -29,7 +65,7 @@ export default function Layout() {
                 e.target.style.display = 'none';
               }}
             />
-            <span className='brand-text'>MUNDIAL 2026</span>
+            <span className='brand-text'>United 2026</span>
             <span className='d-none d-sm-inline-flex gap-1 ms-1'>
               <img
                 className='flag-chip'
@@ -50,72 +86,86 @@ export default function Layout() {
           </span>
 
           <button
-            className='navbar-toggler border-0'
+            className='navbar-toggler border-0 shadow-none'
             type='button'
-            data-bs-toggle='collapse'
-            data-bs-target='#nav'
+            data-bs-toggle='offcanvas'
+            data-bs-target='#navMenu'
+            aria-controls='navMenu'
+            style={{ fontSize: '1.6rem', color: 'var(--text)', padding: '2px 8px' }}
           >
-            <span className='navbar-toggler-icon'></span>
+            <i className={`bi ${menuOpen ? 'bi-x-lg' : 'bi-list'}`}></i>
           </button>
 
-          <div className='collapse navbar-collapse' id='nav'>
-            <ul className='navbar-nav me-auto gap-1'>
-              <li className='nav-item'>
-                <NavLink
-                  to='/partidos'
-                  className={({ isActive }) =>
-                    'nav-link' + (isActive ? ' active' : '')
-                  }
-                >
-                  <i className='bi bi-calendar3 me-1'></i>Pronosticar
-                </NavLink>
-              </li>
-              <li className='nav-item'>
-                <NavLink
-                  to='/historial'
-                  className={({ isActive }) =>
-                    'nav-link' + (isActive ? ' active' : '')
-                  }
-                >
-                  <i className='bi bi-clock-history me-1'></i>Mi historial
-                </NavLink>
-              </li>
-              <li className='nav-item'>
-                <NavLink
-                  to='/tabla'
-                  className={({ isActive }) =>
-                    'nav-link' + (isActive ? ' active' : '')
-                  }
-                >
-                  <i className='bi bi-trophy me-1'></i>Tabla
-                </NavLink>
-              </li>
-              {isAdmin && (
+          <div
+            className='offcanvas offcanvas-start'
+            tabIndex='-1'
+            id='navMenu'
+            aria-labelledby='navMenuLabel'
+            ref={offcanvasRef}
+          >
+            <div className='offcanvas-body'>
+              <ul className='navbar-nav me-auto gap-1 fs-5 fs-md-6'>
                 <li className='nav-item'>
                   <NavLink
-                    to='/admin'
+                    to='/partidos'
+
                     className={({ isActive }) =>
                       'nav-link' + (isActive ? ' active' : '')
                     }
                   >
-                    <i className='bi bi-shield-check me-1'></i>Admin
+                    <i className='bi bi-calendar3 me-2'></i>Pronosticar
                   </NavLink>
                 </li>
-              )}
-            </ul>
+                <li className='nav-item'>
+                  <NavLink
+                    to='/historial'
 
-            <div className='d-flex align-items-center gap-3 mt-2 mt-md-0'>
-              <span style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>
-                <i className='bi bi-person-circle me-1'></i>
-                {user?.name}
-              </span>
-              <button
-                onClick={handleLogout}
-                className='btn btn-sm btn-outline-secondary'
-                style={{ fontSize: '0.8rem' }}
-              >
-                <i className='bi bi-box-arrow-right me-1'></i>Salir
-              </button>
+                    className={({ isActive }) =>
+                      'nav-link' + (isActive ? ' active' : '')
+                    }
+                  >
+                    <i className='bi bi-clock-history me-2'></i>Mi historial
+                  </NavLink>
+                </li>
+                <li className='nav-item'>
+                  <NavLink
+                    to='/tabla'
+
+                    className={({ isActive }) =>
+                      'nav-link' + (isActive ? ' active' : '')
+                    }
+                  >
+                    <i className='bi bi-trophy me-2'></i>Tabla
+                  </NavLink>
+                </li>
+                {isAdmin && (
+                  <li className='nav-item'>
+                    <NavLink
+                      to='/admin'
+
+                      className={({ isActive }) =>
+                        'nav-link' + (isActive ? ' active' : '')
+                      }
+                    >
+                      <i className='bi bi-shield-check me-2'></i>Admin
+                    </NavLink>
+                  </li>
+                )}
+              </ul>
+
+              <div className='menu-user'>
+                <span style={{ fontSize: '0.9rem', color: 'var(--text)' }}>
+                  <i className='bi bi-person-circle me-1'></i>
+                  {user?.name}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className='btn btn-sm btn-outline-secondary'
+                  style={{ fontSize: '0.8rem' }}
+                >
+                  <i className='bi bi-box-arrow-right me-1'></i>Salir
+                </button>
+              </div>
             </div>
           </div>
         </div>
