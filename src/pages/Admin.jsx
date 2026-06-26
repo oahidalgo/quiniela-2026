@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import {
   adminSetResult, adminCreateMatch, adminUpdateMatch, adminDeleteMatch,
   adminListParticipants, adminDeleteParticipant, adminRecalculate, adminReset,
-  getMatches,
+  adminMissingPredictions, getMatches,
 } from '../lib/api'
 import { useSession } from '../context/SessionContext'
 
@@ -17,20 +17,29 @@ export default function Admin() {
   const { token } = useSession()
   const [tab, setTab] = useState('resultados')
 
+  const TABS = [
+    { id: 'resultados', label: 'Resultados' },
+    { id: 'partidos', label: 'Partidos' },
+    { id: 'participantes', label: 'Participantes' },
+    { id: 'reporte', label: 'Reporte' },
+    { id: 'avanzado', label: 'Avanzado' },
+  ]
+
   return (
     <div>
       <h2 style={styles.pageTitle}>PANEL ADMIN</h2>
       <div style={styles.tabs}>
-        {['resultados', 'partidos', 'participantes', 'avanzado'].map((t) => (
-          <button key={t} onClick={() => setTab(t)}
-            style={{ ...styles.tab, ...(tab === t ? styles.tabActive : {}) }}>
-            {t.charAt(0).toUpperCase() + t.slice(1)}
+        {TABS.map((t) => (
+          <button key={t.id} onClick={() => setTab(t.id)}
+            style={{ ...styles.tab, ...(tab === t.id ? styles.tabActive : {}) }}>
+            {t.label}
           </button>
         ))}
       </div>
       {tab === 'resultados' && <TabResultados token={token} />}
       {tab === 'partidos' && <TabPartidos token={token} />}
       {tab === 'participantes' && <TabParticipantes token={token} />}
+      {tab === 'reporte' && <TabReporte token={token} />}
       {tab === 'avanzado' && <TabAvanzado token={token} />}
     </div>
   )
@@ -199,6 +208,130 @@ function TabParticipantes({ token }) {
           <button onClick={() => handleDelete(p.id, p.name)} style={{ ...styles.btnSm, background: 'var(--fallo)', marginLeft: 'auto' }}>Borrar</button>
         </div>
       ))}
+    </div>
+  )
+}
+
+const STAGE_LABELS_SHORT = {
+  grupos: 'Grupos', '16vos': 'Dieciseisavos', '8vos': 'Octavos',
+  '4tos': 'Cuartos', semifinal: 'Semis', '3erlugar': '3er lugar', final: 'Final',
+}
+
+function TabReporte({ token }) {
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  async function load() {
+    setLoading(true)
+    setError('')
+    try {
+      const result = await adminMissingPredictions(token)
+      setData(Array.isArray(result) ? result : [])
+    } catch (err) {
+      setError(err.message || 'Error al cargar el reporte')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => { load() }, [token])
+
+  const today = new Date().toLocaleDateString('es-AR', {
+    weekday: 'long', day: 'numeric', month: 'long',
+  })
+
+  return (
+    <div style={styles.section}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 8 }}>
+        <h3 style={styles.sectionTitle}>
+          Pronósticos pendientes — <span style={{ color: 'var(--gold)', textTransform: 'none' }}>{today}</span>
+        </h3>
+        <button onClick={load} style={styles.btnSm} disabled={loading}>
+          <i className='bi bi-arrow-clockwise me-1'></i>
+          {loading ? 'Actualizando...' : 'Actualizar'}
+        </button>
+      </div>
+
+      {loading && (
+        <div style={{ color: 'var(--muted)', padding: '24px 0' }}>
+          <span className='spinner-border spinner-border-sm me-2'></span>Cargando...
+        </div>
+      )}
+      {error && <div className='alert alert-danger'>{error}</div>}
+
+      {!loading && data && data.length === 0 && (
+        <div style={{ color: 'var(--muted)', textAlign: 'center', padding: '40px 0' }}>
+          <i className='bi bi-calendar-x' style={{ fontSize: '2rem', display: 'block', marginBottom: 8 }}></i>
+          No hay partidos programados para hoy.
+        </div>
+      )}
+
+      {!loading && data && data.length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {data.map((m) => <MatchReport key={m.match_id} match={m} />)}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function MatchReport({ match }) {
+  const allGood = match.missing_count === 0
+  const time = new Date(match.kickoff).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })
+
+  return (
+    <div style={{
+      background: 'var(--surface)',
+      border: `1px solid ${allGood ? 'var(--ganador)' : 'var(--fallo)'}`,
+      borderRadius: 'var(--radius)',
+      padding: '16px 20px',
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 10, marginBottom: allGood ? 0 : 14 }}>
+        <div>
+          <div style={{ fontWeight: 700, fontSize: '1.05rem' }}>
+            {match.home_team} vs {match.away_team}
+          </div>
+          <div style={{ fontSize: '0.78rem', color: 'var(--muted)', marginTop: 3 }}>
+            <i className='bi bi-clock me-1'></i>{time}
+            <span style={{ marginLeft: 10 }}>
+              <i className='bi bi-flag me-1'></i>{STAGE_LABELS_SHORT[match.stage] || match.stage}
+            </span>
+          </div>
+        </div>
+        <div style={{
+          padding: '6px 14px',
+          borderRadius: 'var(--radius-sm)',
+          background: allGood ? 'rgba(0,213,100,.12)' : 'rgba(255,71,87,.12)',
+          color: allGood ? 'var(--ganador)' : 'var(--fallo)',
+          fontWeight: 700,
+          fontSize: '0.88rem',
+          whiteSpace: 'nowrap',
+        }}>
+          {allGood
+            ? <><i className='bi bi-check-circle-fill me-1'></i>Todos pronosticaron</>
+            : <><i className='bi bi-exclamation-circle-fill me-1'></i>{match.missing_count} sin pronóstico</>
+          }
+        </div>
+      </div>
+
+      {!allGood && match.missing_names && match.missing_names.length > 0 && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {match.missing_names.map((name, i) => (
+            <span key={i} style={{
+              padding: '3px 12px',
+              background: 'var(--bg3)',
+              border: '1px solid var(--border)',
+              borderRadius: 20,
+              fontSize: '0.82rem',
+              color: 'var(--text)',
+            }}>
+              <i className='bi bi-person me-1' style={{ color: 'var(--fallo)' }}></i>
+              {name}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

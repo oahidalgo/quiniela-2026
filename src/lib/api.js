@@ -53,3 +53,6 @@ export const adminRecalculate = (token) =>
 
 export const adminReset = (token, deleteParticipants = false) =>
   rpc('admin_reset', { p_token: token, p_delete_participants: deleteParticipants })
+
+export const adminMissingPredictions = (token) =>
+  rpc('admin_missing_predictions', { p_token: token })
