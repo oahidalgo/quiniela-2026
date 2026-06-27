@@ -45,7 +45,8 @@ begin
   ), '[]'::jsonb)
   into v_result
   from matches m
-  where m.kickoff::date = current_date;
+  where (m.kickoff at time zone 'America/Guatemala')::date
+      = (now()      at time zone 'America/Guatemala')::date;
 
   return v_result;
 end; $$;

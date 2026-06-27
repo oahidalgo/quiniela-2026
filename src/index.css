@@ -376,7 +376,20 @@ h4 {
   letter-spacing: 0.1em;
 }
 
-/* ── Section header ──────────────────────── */
+/* ── Section headers ─────────────────────── */
+.stage-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 0.06em;
+  color: #fff;
+  padding: 8px 22px;
+  border-radius: 30px;
+  background: var(--brand-grad);
+  box-shadow: 0 4px 18px rgba(27, 79, 160, 0.35);
+}
 .day-header {
   display: inline-flex;
   align-items: center;
@@ -801,6 +814,10 @@ h4 {
   }
   .table > :not(caption) > * > * {
     padding: 8px 6px;
+  }
+  .stage-header {
+    font-size: 1.4rem;
+    padding: 6px 16px;
   }
   .day-header {
     font-size: 1.1rem;

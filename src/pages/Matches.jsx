@@ -10,6 +10,16 @@ const CAT_CLASS = {
   fallo: 'cat-fallo',
 };
 
+const STAGE_LABELS = {
+  grupos: 'Grupos',
+  '16vos': 'dieciseisavos de final',
+  '8vos': 'octavos de final',
+  '4tos': 'cuartos de final',
+  semifinal: 'Semifinal',
+  '3erlugar': '3er Lugar',
+  final: 'Final',
+};
+
 function isClosed(kickoff) {
   return new Date(kickoff) - new Date() <= 60 * 60 * 1000;
 }
@@ -130,13 +140,12 @@ export default function Matches() {
     (m) => isClosed(m.kickoff) || m.home_result != null,
   );
 
+  // Agrupar abiertos por fecha
   const byDate = {};
   open.forEach((m) => {
     const key = new Date(m.kickoff).toLocaleDateString('es-AR');
-    byDate[key] = byDate[key] || {
-      label: formatDateHeader(m.kickoff),
-      matches: [],
-    };
+    if (!byDate[key])
+      byDate[key] = { label: formatDateHeader(m.kickoff), matches: [] };
     byDate[key].matches.push(m);
   });
 
@@ -163,10 +172,10 @@ export default function Matches() {
     <div style={{ paddingBottom: pendingIds.length ? 80 : 0 }}>
       {/* Hero */}
       <div className='hero'>
-        <div className='hero-title'>Ingresa tu pronósticos</div>
+        <div className='hero-title'>Ingresá tus pronósticos</div>
       </div>
 
-      {/* Partidos abiertos */}
+      {/* Partidos abiertos — agrupados por fecha */}
       {Object.keys(byDate).map((key) => (
         <section key={key} className='mb-4 rise'>
           <div className='mb-3'>
@@ -190,28 +199,41 @@ export default function Matches() {
                 <div key={m.id} className='match-card'>
                   {/* Top row */}
                   <div className='d-flex justify-content-between align-items-center mb-3'>
-                    <span
-                      className='text-muted'
-                      style={{ fontSize: '0.78rem' }}
-                    >
-                      <i className='bi bi-clock me-1'></i>
-                      {formatTime(m.kickoff)}
-                    </span>
+                    <div className='d-flex align-items-center gap-2'>
+                      <span
+                        style={{
+                          fontSize: '0.63rem',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          letterSpacing: '.06em',
+                          color: 'var(--muted)',
+                          background: 'var(--bg3)',
+                          border: '1px solid var(--border2)',
+                          borderRadius: 20,
+                          padding: '2px 9px',
+                        }}
+                      >
+                        {STAGE_LABELS[m.stage] || m.stage}
+                      </span>
+                      -
+                      <span
+                        className='text-muted'
+                        style={{ fontSize: '0.78rem', fontWeight: 'bold' }}
+                      >
+                        <i className='bi bi-clock me-1'></i>
+                        {formatTime(m.kickoff)}
+                      </span>{' '}
+                    </div>
                     <span className='badge badge-open'>● ABIERTO</span>
                   </div>
 
                   {/* Teams + inputs */}
                   <div className='match-body mb-2'>
-                    {/* Local */}
                     <div className='team team-home'>
                       <Flag code={m.home_flag} size={32} />
                       <span className='team-name'>{m.home_team}</span>
                     </div>
-
-                    {/* vs (solo móvil) */}
                     <span className='vs-mobile'>vs</span>
-
-                    {/* Score */}
                     <div className='match-score'>
                       <input
                         className='score-input'
@@ -240,8 +262,6 @@ export default function Matches() {
                         placeholder='–'
                       />
                     </div>
-
-                    {/* Visitante */}
                     <div className='team team-away'>
                       <span className='team-name'>{m.away_team}</span>
                       <Flag code={m.away_flag} size={32} />
@@ -319,7 +339,8 @@ export default function Matches() {
                         </>
                       ) : inp.hasSaved ? (
                         <>
-                          <i className='bi bi-arrow-repeat me-1'></i>Actualizar
+                          <i className='bi bi-arrow-repeat me-1'></i>
+                          Actualizar
                         </>
                       ) : (
                         <>
@@ -357,6 +378,24 @@ export default function Matches() {
               const finished = m.home_result != null;
               return (
                 <div key={m.id} className='match-card closed-card'>
+                  {/* Etiqueta de fase */}
+                  <div className='mb-2'>
+                    <span
+                      style={{
+                        fontSize: '0.63rem',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '.06em',
+                        color: 'var(--muted)',
+                        background: 'var(--bg3)',
+                        border: '1px solid var(--border2)',
+                        borderRadius: 20,
+                        padding: '2px 9px',
+                      }}
+                    >
+                      {STAGE_LABELS[m.stage] || m.stage}
+                    </span>
+                  </div>
                   <div className='d-flex align-items-center gap-3 flex-wrap'>
                     {/* Teams */}
                     <div className='d-flex align-items-center gap-2 flex-grow-1'>
