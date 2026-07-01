@@ -21,7 +21,7 @@ const STAGE_LABELS = {
 };
 
 function isClosed(kickoff) {
-  return new Date(kickoff) - new Date() <= 60 * 60 * 1000;
+  return new Date(kickoff) - new Date() <= 60 * 1000;
 }
 
 function Flag({ code, size = 28 }) {

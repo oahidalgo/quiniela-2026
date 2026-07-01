@@ -85,10 +85,10 @@ begin
   points := 0; category := 'fallo';
 end; $$;
 
--- Cierre del partido (1 hora antes del kickoff)
+-- Cierre del partido (1 minuto antes del kickoff)
 create or replace function match_closing(p_kickoff timestamptz)
 returns timestamptz language sql immutable as $$
-  select p_kickoff - interval '1 hour';
+  select p_kickoff - interval '1 minute';
 $$;
 
 -- Valida token y devuelve participant_id (lanza error si inválido)
